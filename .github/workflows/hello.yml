@@ -12,6 +12,12 @@ jobs:
       - name: Checkout code in VM
         uses: actions/checkout@v4
 
+      - name: Setting up the NODE Environment
+        uses: actions/setup-node@v4
+        with: 
+          node-version: "24.13"
+          cache: "npm"
+
       - name: Installing Dependencies
         run: npm install
 
