@@ -1,0 +1,10 @@
+name: Test Demo Workflow
+
+on: [push]
+
+jobs:
+  job-1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Demo step"
+        run: echo "Hello CI/CD Pipeline"
