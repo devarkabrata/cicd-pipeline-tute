@@ -10,9 +10,9 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_USER: ${{vars.CRED}}
+          POSTGRES_PASSWORD: ${{vars.CRED}}
+          POSTGRES_DB: ${{vars.CRED}}
         ports:
           - 5432:5432
         options: >-
@@ -40,8 +40,7 @@ jobs:
       - name: Testing the flow
         run: npm run test
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
-
+          DATABASE_URL: ${{vars.DATABASEURI}}
       - name: Starting the server and listening
         run: |
           npm run start &
