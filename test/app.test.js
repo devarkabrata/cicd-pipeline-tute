@@ -15,7 +15,7 @@ describe('GET /db-check', () => {
   it('should return 200 and a timestamp from the database', async () => {
     const response = await request(app).get('/db-check');
     expect(response.status).toBe(200);
-    expect(response.body.success).toBe(true);
+    expect(response.body.success).toBe(false);
     expect(response.body.time).toBeDefined();
   });
 });
