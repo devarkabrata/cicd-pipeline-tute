@@ -15,6 +15,9 @@ jobs:
       - name: Installing Dependencies
         run: npm ci
 
+      - name: Testing the flow
+        run: npm run test
+
       - name: Starting the server and listening
         run: |
           npm run start &
