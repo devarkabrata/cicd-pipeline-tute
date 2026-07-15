@@ -12,8 +12,8 @@ jobs:
       - name: Checkout code in VM
         uses: actions/checkout@v4
 
-      - name: Listing all files or folders
-        run: ls -la
+      - name: Installing Dependencies
+        run: npm install
 
-      - name: Printing Sample file content
-        run: cat ./sample.txt
+      - name: Starting the server
+        run: npm run start
