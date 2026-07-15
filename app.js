@@ -1,12 +1,15 @@
 import express from "express";
 import pg from "pg";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const { Pool } = pg;
 
 export const app = express();
 
 const pool = new Pool({
-  connectionString: "postgresql://postgres.lhmphyqbjpfxsqtwgxaw:taskflow@1234@aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres",
+  connectionString: process.env.DATABASE_URL,
 });
 
 app.get("/greet", (req, res) => {
