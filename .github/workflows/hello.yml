@@ -46,3 +46,11 @@ jobs:
           npm run start &
           sleep 5
           curl -s -w "\nHTTP Status: %{http_code}\n" --fail http://localhost:3000/greet
+
+      - name: "Printing Environment variables"
+        run: 
+          echo "Secret Variable is $SEC"
+          echo "Varibales Variable is $VAR"
+        env:
+          SEC: ${{secrets.SEC}}
+          VAR: ${{vars.DATABASEURI}}
