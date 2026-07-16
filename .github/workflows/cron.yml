@@ -1,0 +1,33 @@
+name: Sample-Test-Cron
+
+on: 
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch: {}
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Greeting the user"
+        run: echo "Hello welcome to the cron"
+
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: "Setting Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: "Install Dependencies"
+        run: "npm install"
+
+      - name: "Put a curl request"
+        run: | 
+          npm run start &
+          sleep 5
+          curl -s -w "\nHTTP Status: %{http_code}\n" --fail http://localhost:3000/greet
+
+      
