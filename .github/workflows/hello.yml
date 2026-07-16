@@ -1,6 +1,10 @@
 name: Test Demo Workflow
 
-on: [push]
+on: 
+  push:
+    branches: [main, production]
+  pull_request: 
+    branches: [main]
 
 jobs:
   linting-check:
@@ -34,7 +38,7 @@ jobs:
         run: echo "Welcome to Environment step"
 
       - name: Printing Environment Variables
-        run: 
+        run: |
           echo "Secret Variable is $SEC"
           echo "Varibales Variable is $VAR"
           echo "Credentials is $CRED"
@@ -87,3 +91,23 @@ jobs:
           npm run start &
           sleep 5
           curl -s -w "\nHTTP Status: %{http_code}\n" --fail http://localhost:3000/greet
+
+  initialize-deploy:
+    runs-on: ubuntu-latest
+    needs: connectivity-check
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: Greet to Deployment
+        run: echo "Welcome to Deploy Checkpoint"
+
+      - name: Check Environment
+        run: echo "Deploy Hook $RENDER_DEPLOY_HOOK"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.DEPLOY_HOOK }}
+
+      - name: Trigger Render deploy
+        run: |
+          curl -s -w "\nHTTP Status: %{http_code}\n" --fail -X POST "$RENDER_DEPLOY_HOOK"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.DEPLOY_HOOK }}
