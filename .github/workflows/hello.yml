@@ -3,7 +3,46 @@ name: Test Demo Workflow
 on: [push]
 
 jobs:
-  job-1:
+  linting-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Greeting to Linting step
+        run: echo "Welcome to Linting step"
+
+      - name: Extract Folders and files
+        uses: actions/checkout@v4
+
+      - name: Setting up the NODE Environment
+        uses: actions/setup-node@v4
+        with: 
+          node-version: "24"
+          cache: "npm"
+
+      - name: Installing Dependencies
+        run: npm install
+      
+      - name: Checking Linting errors
+        run: npm run lint
+
+  environment-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Greeting to Environment step
+        run: echo "Welcome to Environment step"
+
+      - name: Printing Environment Variables
+        run: 
+          echo "Secret Variable is $SEC"
+          echo "Varibales Variable is $VAR"
+          echo "Credentials is $CRED"
+        env:
+          SEC: ${{secrets.SEC}}
+          VAR: ${{vars.DATABASEURI}}
+          CRED: ${{vars.CRED}}
+
+  connectivity-check:
     runs-on: ubuntu-latest
 
     services:
@@ -23,7 +62,7 @@ jobs:
 
     steps:
       - name: Greeting Step
-        run: echo "Hello CI/CD Pipeline"
+        run: echo "Hello Welcome to Connection checking"
 
       - name: Checkout code in VM
         uses: actions/checkout@v4
@@ -31,7 +70,7 @@ jobs:
       - name: Setting up the NODE Environment
         uses: actions/setup-node@v4
         with: 
-          node-version: "24.13"
+          node-version: "24"
           cache: "npm"
 
       - name: Installing Dependencies
@@ -46,11 +85,3 @@ jobs:
           npm run start &
           sleep 5
           curl -s -w "\nHTTP Status: %{http_code}\n" --fail http://localhost:3000/greet
-
-      - name: "Printing Environment variables"
-        run: 
-          echo "Secret Variable is $SEC"
-          echo "Varibales Variable is $VAR"
-        env:
-          SEC: ${{secrets.SEC}}
-          VAR: ${{vars.DATABASEURI}}
